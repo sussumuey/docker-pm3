@@ -1,0 +1,12 @@
+zope:
+  image: interlegis/zope
+  ports:
+  - "80:80"
+  links:
+  - zeoserver
+  environment:
+  - BUILDOUT_ZEO_CLIENT=True
+  - BUILDOUT_ZEO_ADDRESS=zeoserver:8100
+
+zeoserver:
+  image: interlegis/zeoserver
