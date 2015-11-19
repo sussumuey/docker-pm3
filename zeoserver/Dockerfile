@@ -28,4 +28,4 @@ USER plone_daemon
 
 EXPOSE 2500
 
-CMD ["start"] 
+CMD ["/usr/bin/start"] 
