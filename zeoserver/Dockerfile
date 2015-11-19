@@ -1,31 +1,30 @@
 FROM ubuntu:14.04
 MAINTAINER "Fabio Rauber" <fabiorauber@gmail.com>
 
-ENV ZEO_HOME=/srv/plone/zeo-server
+ENV ZEO_HOME=/opt/zeoserver
 
-# Upgrade Ubuntu
-RUN apt-get update && apt-get upgrade
+RUN apt-get update && apt-get upgrade && \
+    apt-get install -y \
+        python \
+        python-dev && \
+    apt-get clean && \
+    mkdir -p $ZEO_HOME
 
-RUN apt-get install -y \
-        git \
-        puppet \
-        language-pack-pt-base && \
-# Avoid errors in Puppet Service evaluation
-    mv /sbin/initctl /sbin/oldinitctl && \
-    echo -e '#!/bin/bash\nif [ $1 == "--version" ]\nthen\n  echo "initctl (upstart 1.12.1)"\nfi\n/sbin/oldinitctl "$@"' > /sbin/initctl && \
-    chmod 755 /sbin/initctl && \
-# Continue...
-    git clone https://github.com/interlegis/pm3-puppet-installer.git /root/pm3-puppet-installer && \
-    cd /root/pm3-puppet-installer && \
-    ./install.sh -z -y && \
-    rm /srv/plone/buildout-cache.tar.gz
+COPY src/base.cfg           $ZEO_HOME/base.cfg
+COPY src/bootstrap.py       $ZEO_HOME/
+COPY src/start.sh           /usr/bin/start
+COPY src/configure.py       /configure.py
 
-COPY src/start.sh /usr/bin/start
+WORKDIR $ZEO_HOME
 
-VOLUME /srv/plone/zeo-server/var/
+RUN python bootstrap.py -v 2.2.1 --setuptools-version=7.0 -c base.cfg && \
+    ./bin/buildout -c base.cfg && \
+    groupadd -g 500 zope-www && \
+    useradd -u 500 -g 500 -m -s /bin/bash zope-www && \
+    chown -R 500:500 $ZEO_HOME
 
-USER plone_daemon
+VOLUME $ZEO_HOME/var/
 
-EXPOSE 2500
+USER zope-www
 
-CMD ["/usr/bin/start"] 
+CMD ["start"]
