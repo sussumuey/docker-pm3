@@ -48,6 +48,14 @@ cd <folder where docker-compose.yaml is>
 docker-compose up -d
 ```
 
+## Whats happening?
+
+To view logs on screen:
+
+```
+docker-compose logs -f
+```
+
 ## Contributing
 
 Pull requests welcome!
