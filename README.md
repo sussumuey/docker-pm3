@@ -48,7 +48,7 @@ cd <folder where docker-compose.yaml is>
 docker-compose up -d
 ```
 
-## Whats happening?
+## What's happening?
 
 To view logs on screen:
 
