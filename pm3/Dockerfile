@@ -1,6 +1,5 @@
 FROM interlegis/plone
 MAINTAINER "Sussumu Yamada" <sussumu@interlegis.leg.br>
-
 RUN apt-get install -y \
      build-essential \
      zlib1g-dev \
@@ -39,5 +38,6 @@ RUN apt-get install -y \
 COPY src/versions.cfg       $ZOPE_HOME/
 COPY src/pm3.cfg            $ZOPE_HOME/
 COPY src/base.cfg           $ZOPE_HOME/
+COPY src/development.cfg    $ZOPE_HOME/buildout.cfg
 
 RUN ./install.sh
