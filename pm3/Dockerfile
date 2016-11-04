@@ -1,8 +1,7 @@
 FROM interlegis/plone
-MAINTAINER "Fabio Rauber" <fabiorauber@gmail.com>
+MAINTAINER "Sussumu Yamada" <sussumu@interlegis.leg.br>
 
 RUN apt-get install -y \
-     
      build-essential \
      zlib1g-dev \
      libjpeg62-dev \
