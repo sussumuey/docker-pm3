@@ -1,5 +1,5 @@
 plone:
-  image: interlegis/pm3
+  image: sussumuey/pm3
   ports:
   - "80:80"
   links:
@@ -9,4 +9,4 @@ plone:
   - BUILDOUT_ZEO_ADDRESS=zeoserver:8100
 
 zeoserver:
-  image: interlegis/zeoserver
+  image: sussumuey/zeoserver
